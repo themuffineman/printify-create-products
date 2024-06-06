@@ -14,10 +14,10 @@ app.listen(PORT, ()=> {console.log(`Server listening on port ${PORT}`)})
 
 app.post('/create-products', async (req,res)=>{
     console.log('Received a request')
-    const {imageUrl} = req.body
+    const body = req.body
+    const imageUrl = modifyUrl(body.imageUrl)
     const url = 'https://api.printify.com/v1/shops/11847788/products.json'
     const uploadImageUrl = 'https://api.printify.com/v1/uploads/images.json'
-    const productIDs = []
     const responses = []
     const apiResponse = []
 
@@ -217,3 +217,17 @@ app.post('/create-products', async (req,res)=>{
     }
 
 })
+
+function modifyUrl(url){
+    let newUrl
+
+    if (url.startsWith('//')) {
+        newUrl = 'https:' + url;  
+    }else if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        newUrl = 'https://' + url; 
+    }else{
+        newUrl = url
+    }
+
+    return newUrl
+}
