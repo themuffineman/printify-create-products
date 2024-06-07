@@ -16,6 +16,7 @@ app.post('/create-products', async (req,res)=>{
     console.log('Received a request')
     const body = req.body
     console.log(body)
+    return res.status(200).json({good: 'all good'})
     const imageUrl = modifyUrl(body.imageUrl)
     const url = 'https://api.printify.com/v1/shops/11847788/products.json'
     const uploadImageUrl = 'https://api.printify.com/v1/uploads/images.json'
