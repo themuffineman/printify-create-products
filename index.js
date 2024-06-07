@@ -172,8 +172,11 @@ app.post('/create-products', async (req,res)=>{
                     const resBody = await res.json()
 
                     const mockupImages = resBody.images.map((image)=>{
-                        return image.src
-                    })
+                        return {
+                            images: image.src,
+                            variants: variant_ids
+                        }
+                    }) 
 
                     apiResponse.push({
                         id: response.id,
