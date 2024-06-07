@@ -174,14 +174,15 @@ app.post('/create-products', async (req,res)=>{
                     const mockupImages = resBody.images.map((image)=>{
                         return {
                             images: image.src,
-                            variants: variant_ids
+                            variants: image.variant_ids
                         }
                     }) 
 
                     apiResponse.push({
                         id: response.id,
                         images: mockupImages,
-                        blueprintId: product.blueprintId  
+                        blueprintId: product.blueprintId,
+                        price: product.price
                     })
                 } catch (error) {
                    console.error(error.message) 
@@ -192,25 +193,25 @@ app.post('/create-products', async (req,res)=>{
             }
         }
 
-        for(const response of responses){
-            try {
-                const res = await fetch(`https://api.printify.com/v1/shops/11847788/products/${response.id}.json`, {method: "GET", headers:{"Content-Type": "application/json", "Authorization": `${process.env.BEARER_KEY}`}})
-                if(!res.ok){
-                    throw new Error('Error fetching mockups')
-                }
-                const resBody = await res.json()
-                const mockupImages = resBody.images.map((image)=>{
-                    return image.src
-                })
-                apiResponse.push({
-                    id: response.id,
-                    images: mockupImages,
+        // for(const response of responses){
+        //     try {
+        //         const res = await fetch(`https://api.printify.com/v1/shops/11847788/products/${response.id}.json`, {method: "GET", headers:{"Content-Type": "application/json", "Authorization": `${process.env.BEARER_KEY}`}})
+        //         if(!res.ok){
+        //             throw new Error('Error fetching mockups')
+        //         }
+        //         const resBody = await res.json()
+        //         const mockupImages = resBody.images.map((image)=>{
+        //             return image.src
+        //         })
+        //         apiResponse.push({
+        //             id: response.id,
+        //             images: mockupImages,
                     
-                })
-            } catch (error) {
-               console.error(error.message) 
-            }
-        }
+        //         })
+        //     } catch (error) {
+        //        console.error(error.message) 
+        //     }
+        // }
 
         res.json({ response: apiResponse });
 
